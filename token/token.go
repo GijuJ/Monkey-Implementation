@@ -22,6 +22,9 @@ const (
 	// 비교 연산자
 	LT = "<"
 	GT = ">"
+
+	EQ     = "=="
+	NOT_EQ = "!="
 	// 구분자
 	COMMA     = ","
 	SEMICOLON = ";"
