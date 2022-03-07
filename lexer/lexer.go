@@ -76,6 +76,9 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.LBRACE, l.ch)
 	case '}':
 		tok = newToken(token.RBRACE, l.ch)
+	case '"':
+		tok.Type = token.STRING
+		tok.Literal = l.readString()
 	//EOF
 	case 0:
 		tok.Literal = ""
@@ -130,7 +133,7 @@ func (l *Lexer) readNumber() string {
 }
 
 func (l *Lexer) peekChar() byte { // 뒤의 값을 단순히 살펴 보기 위함.
-	if l.readPosition >= len(l.input){
+	if l.readPosition >= len(l.input) {
 		return 0
 	} else {
 		return l.input[l.readPosition]
@@ -139,4 +142,15 @@ func (l *Lexer) peekChar() byte { // 뒤의 값을 단순히 살펴 보기 위�
 
 func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
+}
+
+func (l *Lexer) readString() string {
+	position := l.position + 1
+	for {
+		l.readChar()
+		if l.ch == '"' || l.ch == 0 {
+			break
+		}
+	}
+	return l.input[position:l.position]
 }
