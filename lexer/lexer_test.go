@@ -58,6 +58,8 @@ func TestNextToken(t *testing.T) {
 
 	"foobar"
 	"foo bar"
+	[1, 2];
+	{"foo" : "bar"}
 	`
 	tests := []struct {
 		expectedType    token.TokenType
@@ -139,9 +141,23 @@ func TestNextToken(t *testing.T) {
 		{token.NOT_EQ, "!="},
 		{token.INT, "9"},
 		{token.SEMICOLON, ";"},
-		// end of file
+		// string type
 		{token.STRING, "foobar"},
 		{token.STRING, "foo bar"},
+		// aray type
+		{token.LBRACKET, "["},
+		{token.INT, "1"},
+		{token.COMMA, ","},
+		{token.INT, "2"},
+		{token.RBRACKET, "]"},
+		{token.SEMICOLON, ";"},
+		//hash type
+		{token.LBRACE, "{"},
+		{token.STRING, "foo"},
+		{token.COLON, ":"},
+		{token.STRING, "bar"},
+		{token.RBRACE, "}"},
+		//end of file
 		{token.EOF, ""},
 	}
 

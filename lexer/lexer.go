@@ -79,6 +79,15 @@ func (l *Lexer) NextToken() token.Token {
 	case '"':
 		tok.Type = token.STRING
 		tok.Literal = l.readString()
+	// array tokens
+	case '[':
+		tok = newToken(token.LBRACKET, l.ch)
+	case ']':
+		tok = newToken(token.RBRACKET, l.ch)
+	// hash token, colon
+	case ':':
+		tok = newToken(token.COLON, l.ch)
+
 	//EOF
 	case 0:
 		tok.Literal = ""
