@@ -32,6 +32,20 @@ const (
 	OpJumpNotTruthy
 	OpJump
 	OpNull
+	// binding
+	OpGetGlobal
+	OpSetGlobal
+	// binding local
+	OpGetLocal
+	OpSetLocal
+	// composite data type
+	OpArray
+	OpHash
+	OpIndex
+	// function code
+	OpCall
+	OpReturnValue
+	OpReturn
 )
 
 type Definition struct {
@@ -56,6 +70,16 @@ var definitions = map[Opcode]*Definition{
 	OpJumpNotTruthy: {"OpJumpNotTruthy", []int{2}},
 	OpJump:          {"OpJump", []int{2}},
 	OpNull:          {"OpNull", []int{}},
+	OpGetGlobal:     {"OpGetGlobal", []int{2}},
+	OpSetGlobal:     {"OpSetGlobal", []int{2}},
+	OpArray:         {"OpArray", []int{2}},
+	OpHash:          {"OpHash", []int{2}},
+	OpIndex:         {"OpIndex", []int{}},
+	OpCall:          {"OpCall", []int{}},
+	OpReturnValue:   {"OpReturnValue", []int{}},
+	OpReturn:        {"OpReturn", []int{}},
+	OpGetLocal:      {"OpGetLocal", []int{2}},
+	OpSetLocal:      {"OpSetLocal", []int{2}},
 }
 
 func Lookup(op byte) (*Definition, error) {
@@ -108,10 +132,10 @@ func ReadOperands(def *Definition, ins Instructions) ([]int, int) {
 func ReadUint16(ins Instructions) uint16 {
 	return binary.BigEndian.Uint16(ins)
 }
+func ReadUint8(ins Instructions) uint8 { return uint8(ins[0]) }
 
 func (ins Instructions) String() string {
 	var out bytes.Buffer
-
 	i := 0
 	for i < len(ins) {
 		def, err := Lookup(ins[i])
